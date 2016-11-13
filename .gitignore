@@ -2,3 +2,5 @@
 .idea/
 data*/
 credentials.json
+*.log
+__pycache__/
