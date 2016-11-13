@@ -9,6 +9,8 @@ from fake_useragent import UserAgent
 
 UA = UserAgent()
 
+from log import log
+
 
 def profile_exists(profile_id):
     """We don't rely on a GraphAPIError because we want to minimize the number of calls to the GraphAPI.
@@ -32,10 +34,10 @@ def query_profile_with_graph_api(profile_id, access_token):
 def get_last_profile_id(default):
     last_profile_id = recover_last_known_profile_id()
     if last_profile_id is not None:
-        print('Found photos in {}. Resuming from {}'.format('data', last_profile_id))
+        log('Found photos in {}. Resuming from {}'.format('data', last_profile_id))
         return last_profile_id
     else:
-        print('Could not find any photos. Starting from {}.'.format(default))
+        log('Could not find any photos. Starting from {}.'.format(default))
         return default
 
 
@@ -50,12 +52,13 @@ def recover_last_known_profile_id():
 def extract_information(profile_id, access_token):
     output_filename = 'data/{}.jpg'.format(profile_id)
     if os.path.isfile(output_filename):
-        print('File for profile {} already exists. Skipping.'.format(profile_id))
+        log('File for profile {} already exists. Skipping.'.format(profile_id))
+        return
     if profile_exists(profile_id):
         try:
             profile = query_profile_with_graph_api(profile_id, access_token)
         except GraphAPIError as e:
-            print(e)
+            log(str(e))
             return
         pickle.dump(profile, open('data/{}.pkl'.format(profile_id), 'wb'))
         url = 'https://graph.facebook.com/{}/picture?width=500'.format(profile_id)
