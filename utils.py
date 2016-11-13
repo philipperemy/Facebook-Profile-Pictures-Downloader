@@ -4,6 +4,7 @@ import pickle
 import facebook
 import requests
 import wget
+from facebook import GraphAPIError
 from fake_useragent import UserAgent
 
 UA = UserAgent()
@@ -47,9 +48,16 @@ def recover_last_known_profile_id():
 
 
 def extract_information(profile_id, access_token):
+    output_filename = 'data/{}.jpg'.format(profile_id)
+    if os.path.isfile(output_filename):
+        print('File for profile {} already exists. Skipping.'.format(profile_id))
     if profile_exists(profile_id):
-        profile = query_profile_with_graph_api(profile_id, access_token)
-        pickle.dump(profile, open('data/{}.txt'.format(profile_id), 'wb'))
+        try:
+            profile = query_profile_with_graph_api(profile_id, access_token)
+        except GraphAPIError as e:
+            print(e)
+            return
+        pickle.dump(profile, open('data/{}.pkl'.format(profile_id), 'wb'))
         url = 'https://graph.facebook.com/{}/picture?width=500'.format(profile_id)
         output_filename = 'data/{}.jpg'.format(profile_id)
         wget.download(url, out=output_filename, bar=None)
