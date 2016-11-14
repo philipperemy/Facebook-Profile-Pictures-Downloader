@@ -28,6 +28,6 @@ if __name__ == '__main__':
     credentials = json.load(open('credentials.json', 'r'))
     fb_auth_token = credentials['FB_AUTH_TOKEN']
     profile_id = get_last_profile_id(default=1261675464)
-    num_threads = 8
+    num_threads = 20
     profile_ids = np.cumsum([profile_id // num_threads] * num_threads)
     parallel_function(run, profile_ids, num_threads)

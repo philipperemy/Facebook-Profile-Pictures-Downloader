@@ -59,6 +59,8 @@ def extract_information(profile_id, access_token):
             profile = query_profile_with_graph_api(profile_id, access_token)
         except GraphAPIError as e:
             log(str(e))
+            if 'validating access token' in str(e):
+                raise e
             return
         pickle.dump(profile, open('data/{}.pkl'.format(profile_id), 'wb'))
         url = 'https://graph.facebook.com/{}/picture?width=500'.format(profile_id)
