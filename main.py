@@ -1,4 +1,5 @@
 import json
+import sys
 
 import numpy as np
 from numpy.random import randint
@@ -18,7 +19,7 @@ def parallel_function(f, sequence, num_threads=None):
 
 def run(profile_id_start):
     while True:
-        log('Processing profile id = {}'.format(profile_id_start))
+        # log('Processing profile id = {}'.format(profile_id_start))
         extract_information(profile_id_start, fb_auth_token)
         profile_id_start += 1
 
@@ -31,9 +32,10 @@ def find_smallest_different_between_two_elements(arr):
 if __name__ == '__main__':
     credentials = json.load(open('credentials.json', 'r'))
     fb_auth_token = credentials['FB_AUTH_TOKEN']
-    profile_id = get_last_profile_id(default=1261675464)
-    num_threads = 8
-    # profile_ids = np.cumsum([profile_id // num_threads] * num_threads)
+    profile_id = get_last_profile_id(default=1676655434)
+    assert len(sys.argv) == 2, 'Please input the number of threads as a parameter.'
+    num_threads = int(sys.argv[1])
+    print('Using {} threads.'.format(num_threads))
     while True:
         profile_ids = randint(10, profile_id, size=num_threads)
         smallest_difference = find_smallest_different_between_two_elements(profile_ids)
