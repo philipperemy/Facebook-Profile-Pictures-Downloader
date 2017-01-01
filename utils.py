@@ -1,15 +1,17 @@
 import os
 import pickle
+from urllib.error import URLError
 
 import facebook
 import requests
 import wget
 from facebook import GraphAPIError
 from fake_useragent import UserAgent
-
-UA = UserAgent()
+from requests.exceptions import ConnectionError
 
 from log import log
+
+UA = UserAgent()
 
 
 def profile_exists(profile_id):
@@ -62,7 +64,13 @@ def extract_information(profile_id, access_token):
             if 'validating access token' in str(e):
                 raise e
             return
-        pickle.dump(profile, open('data/{}.pkl'.format(profile_id), 'wb'))
-        url = 'https://graph.facebook.com/{}/picture?width=500'.format(profile_id)
-        output_filename = 'data/{}.jpg'.format(profile_id)
-        wget.download(url, out=output_filename, bar=None)
+        except ConnectionError as r:
+            log(str(r))
+            return
+        try:
+            pickle.dump(profile, open('data/{}.pkl'.format(profile_id), 'wb'))
+            url = 'https://graph.facebook.com/{}/picture?width=500'.format(profile_id)
+            wget.download(url, out=output_filename, bar=None)
+        except URLError as u:
+            log(str(u))
+            return
