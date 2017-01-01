@@ -8,6 +8,8 @@ formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(thread
 handler.setFormatter(formatter)
 logger.addHandler(handler)
 
+logging.getLogger("requests").setLevel(logging.WARNING)
+
 
 def log(string):
     logger.log(logging.INFO, string)
