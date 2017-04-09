@@ -48,6 +48,14 @@ export FB_EMAIL=john.appleseed@apple.com FB_PASS='i_love_apple';python3 auto_tok
 ```
 Where `FB_EMAIL` is your Facebook email address and `FB_PASS` is your Facebook password. I advise you to create a specific Facebook account just for those tasks.
 
+You can check if the server is responding by running this command:
+
+```
+curl http://localhost:5000/
+```
+
+Or just connecting to http://localhost:5000/ from your favorite browser.
+
 
 ## Scan data
 
