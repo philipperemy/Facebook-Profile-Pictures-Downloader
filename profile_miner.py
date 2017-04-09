@@ -11,12 +11,12 @@ USER_REQUEST_LIMIT_REACHED_SECONDS_BEFORE_RESUMING_SEC = 3600 * 1  # one hour he
 def main():
     while True:
         try:
-            default_max_profile_id = 1676655434
-            max_known_profile_id = get_last_known_profile_id(default=default_max_profile_id)
+            default_max_known_profile_id = 1676655434
+            max_known_profile_id = get_last_known_profile_id(default=default_max_known_profile_id)
             assert len(sys.argv) == 2, 'Please input the number of threads as a parameter.'
             num_threads = int(sys.argv[1])
             log('Using {} threads.'.format(num_threads))
-            profile_ids = [default_max_profile_id]
+            profile_ids = [default_max_known_profile_id]
             while True:
                 profile_ids = randint(10, max_known_profile_id, size=num_threads)
                 if num_threads > 1:
