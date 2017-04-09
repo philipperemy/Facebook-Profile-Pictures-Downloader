@@ -1,3 +1,4 @@
+import json
 import pickle
 from glob import glob
 from urllib.error import URLError
@@ -7,13 +8,9 @@ import numpy as np
 import requests
 import wget
 from facebook import GraphAPIError
-from fake_useragent import UserAgent
 from requests.exceptions import ConnectionError
 
 from log import log
-
-UA = UserAgent()
-import json
 
 credentials = json.load(open('credentials.json', 'r'))
 fb_auth_token = credentials['FB_AUTH_TOKEN']
@@ -23,7 +20,9 @@ def profile_exists(profile_id):
     """We don't rely on a GraphAPIError because we want to minimize the number of calls to the GraphAPI.
     Mainly because of the API limits."""
     # FULL NAME
-    headers = {'User-Agent': UA.chrome}
+    # headers = {'User-Agent': UA.chrome}
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.2 (KHTML, like Gecko) Chrome/22.0.1216.0 Safari/537.2'}
     try:
         r = requests.get('http://facebook.com/profile.php?id={}'.format(profile_id), headers=headers)
     except:
