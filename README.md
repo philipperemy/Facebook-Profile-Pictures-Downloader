@@ -1,6 +1,11 @@
 # Mining into Facebook public profiles with Deep Learning
 Applying Deep Learning to Facebook public information to extract interesting patterns
 
+<div align="center">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/F_icon.svg/2000px-F_icon.svg.png" width="200"><br><br>
+</div>
+
+
 <i>Nothing very precise yet. We're just going to have fun and build a big Facebook dataset in the short term!</i>
 
 ## How to use it?
