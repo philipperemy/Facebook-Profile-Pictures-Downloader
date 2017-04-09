@@ -1,5 +1,7 @@
-facebook_sdk
-fake_useragent
+facebook_sdk==3.0.0a0
+Flask
 numpy
 requests
+selenium
 wget
+beautifulsoup4

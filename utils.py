@@ -36,6 +36,9 @@ def profile_exists(profile_id):
 
 def query_profile_with_graph_api(profile_id, access_token):
     """Limited to 4800 calls per day. Not sure though."""
+    # https://developers.facebook.com/docs/graph-api/advanced/rate-limiting
+    # A total of 4800 calls per daily engaged users can be made on behalf of the page per 24 hours in aggregate.
+    # I could use it like 15000/day
     graph = facebook.GraphAPI(access_token)
     profile = graph.get_object(profile_id)
     return profile
