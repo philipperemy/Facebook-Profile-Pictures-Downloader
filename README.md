@@ -26,7 +26,22 @@ python3 profile_miner.py 10 # to start mining facebook profiles. Here we use 10 
 
 ## Facebook Token ID
 
+### Manual update
+Get your Facebook Token ID here and load it into your `credentials.json` file.
 https://developers.facebook.com/tools/explorer/
+
+### Automatic update (much more useful)
+
+Before using the automatic updates, make sure that it worked at least one time with the manual update of the token. Browse on https://developers.facebook.com/tools/explorer/ and request a Token ID. The server is a web scraper. If everything is not correctly set up, it will fail for sure.
+
+Once it's done, let's start this server that will automatically query Facebook servers for a new token. The main script auto detects when the token expires. When this happens, a call is made to the server started by `auto_token_generator.py`.
+
+Start the server with this command:
+```
+export FB_EMAIL=john.appleseed@apple.com FB_PASS='i_love_apple';python3 auto_token_generator.py
+```
+Where `FB_EMAIL` is your Facebook email address and `FB_PASS` is your Facebook password.
+
 
 ## Scan data
 
