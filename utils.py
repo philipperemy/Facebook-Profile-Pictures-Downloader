@@ -1,5 +1,5 @@
-import os
 import pickle
+from glob import glob
 from urllib.error import URLError
 
 import facebook
@@ -9,7 +9,7 @@ import wget
 from facebook import GraphAPIError
 from fake_useragent import UserAgent
 from requests.exceptions import ConnectionError
-from glob import glob
+
 from log import log
 
 UA = UserAgent()
@@ -94,6 +94,8 @@ def parallel_function(f, sequence, num_threads=None):
 
 
 def run(cur_profile_id):
+    log('Starting from profile id = {}. This thread is going '
+        'to increment the profile_id by 1 at every step.'.format(cur_profile_id))
     while True:
         # log('Processing profile id = {}'.format(profile_id_start))
         extract_information(cur_profile_id, fb_auth_token)
