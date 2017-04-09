@@ -54,7 +54,7 @@ You can check if the server is responding by running this command:
 curl http://localhost:5000/
 ```
 
-Or just connecting to http://localhost:5000/ from your favorite browser.
+Or just connecting to http://localhost:5000/ from your favorite browser. Be patient, it can take up to one minute to query Facebook servers. The procedure is explicitly slow to avoid any bot detection.
 
 
 ## Scan data
