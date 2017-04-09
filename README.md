@@ -5,6 +5,15 @@ Applying Deep Learning to Facebook public information to extract interesting pat
 
 ## How to use it?
 
+Install the latest `facebook-sdk`.
+```
+cd /tmp/
+git clone git@github.com:mobolic/facebook-sdk.git
+cd facebook-sdk
+sudo pip3 install .
+```
+
+Then clone this repository and follow the instructions below.
 ```
 # For Python 3.x
 git clone git@github.com:philipperemy/Facebook-Profile-Deep-Learning.git facebook-explorer
