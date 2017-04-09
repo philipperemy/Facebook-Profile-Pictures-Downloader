@@ -134,3 +134,18 @@ def run(cur_profile_id):
 
 def find_smallest_different_between_two_elements(arr):
     return min(np.diff(np.sort(arr)))
+
+
+def update_token():
+    log('Lets try to interact with the server auto_token_generator.py. Please be patient.')
+    try:
+        response = requests.get('http://localhost:5000/', timeout=999999.0)
+        assert response.status_code == 200
+        new_token = json.loads(response.content.decode('utf-8'))['fb_auth_token']
+        log('New token successfully fetched = {}'.format(new_token))
+        overwrite_current_token(new_token)
+        log('Script is going to restart. Stay tuned!')
+    except:
+        log('Script is going to end. Could not contact the auto token generator.')
+        log('Please start it or get a new token at https://developers.facebook.com/tools/explorer/.')
+        exit(1)
