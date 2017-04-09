@@ -12,7 +12,7 @@ cd facebook-explorer
 sudo pip3 install -r requirements.txt
 cp credentials.json.example credentials.json
 vim credentials.json # Get your Token ID here https://developers.facebook.com/tools/explorer/
-python3 profile_miner.py # to start mining facebook profiles.
+python3 profile_miner.py 10 # to start mining facebook profiles. Here we use 10 threads to query Facebook.
 ```
 
 ## Facebook Token ID
