@@ -5,7 +5,7 @@ from numpy.random import randint
 
 from utils import *
 
-USER_REQUEST_LIMIT_REACHED_SECONDS_BEFORE_RESUMING_SEC = 3600 * 2
+USER_REQUEST_LIMIT_REACHED_SECONDS_BEFORE_RESUMING_SEC = 3600 * 1  # one hour here.
 
 
 def main():
@@ -29,16 +29,17 @@ def main():
         except UserRequestLimitReached as urlr:
             print(str(urlr))
             log('UserRequestLimitReached exception raised. Lets pause down the script for a while')
-            log('Going to wait for {} seconds.'.format(USER_REQUEST_LIMIT_REACHED_SECONDS_BEFORE_RESUMING_SEC))
+            log('Going to wait for {} seconds before restarting.'.format(
+                USER_REQUEST_LIMIT_REACHED_SECONDS_BEFORE_RESUMING_SEC))
             sleep(USER_REQUEST_LIMIT_REACHED_SECONDS_BEFORE_RESUMING_SEC)
         except AccessTokenExpired as ate:
             print(str(ate))
             log('AccessTokenExpired exception raised. Lets update the token.')
-            log('Lets check if the server from auto_token_generator.py is started')
+            log('Lets try to interact with the server auto_token_generator.py. Please be patient.')
             try:
-                response = requests.get('http://localhost:5000/')
+                response = requests.get('http://localhost:5000/', timeout=999999.0)
                 assert response.status_code == 200
-                new_token = response.content['fb_auth_token']
+                new_token = json.loads(response.content.decode('utf-8'))['fb_auth_token']
                 log('New token successfully fetched = {}'.format(new_token))
                 overwrite_current_token(new_token)
                 log('Script is going to restart. Stay tuned!')

@@ -1,9 +1,9 @@
+import json
 import os
 import time
 
 from bs4 import BeautifulSoup
 from flask import Flask
-from flask import jsonify
 from selenium import webdriver
 
 FB_EMAIL = os.environ['FB_EMAIL']
@@ -50,7 +50,13 @@ def hello_world():
 
     driver.quit()
     print(token)
-    return jsonify({'fb_auth_token': token})
+    data = {'fb_auth_token': token}
+    response = app.response_class(
+        response=json.dumps(data),
+        status=200,
+        mimetype='application/json'
+    )
+    return response
 
 
 app.run()
