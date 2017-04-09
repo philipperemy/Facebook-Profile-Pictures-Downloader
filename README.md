@@ -66,3 +66,8 @@ Sometimes the profile is there but it's not available in the Graph API. Most of 
 ```
 INFO:facebook-deep-learning:Unsupported get request. Object with ID '827435111' does not exist, cannot be loaded due to missing permissions, or does not support this operation. Please read the Graph API documentation at https://developers.facebook.com/docs/graph-api
 ```
+
+The token is only valid for one hour. If you guys have a better way to extend the expiration date, I'll be happy to hear!
+```
+facebook.GraphAPIError: Error validating access token: Session has expired on Saturday, 08-Apr-17 23:00:00 PDT. The current time is Saturday, 08-Apr-17 23:01:30 PDT.
+```
