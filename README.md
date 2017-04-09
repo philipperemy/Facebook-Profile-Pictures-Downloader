@@ -23,6 +23,9 @@ https://developers.facebook.com/tools/explorer/
 
 ```
 python3 scan_data.py
+```
+
+```
 This scripts refreshes every 10 seconds.
 --------------------------------------------------------------------------------
 Number of Facebook descriptions : 15097 (+15097)
@@ -35,6 +38,7 @@ Number of Facebook descriptions : 15115 (+11)
 Number of Facebook images       : 15107 (+11)
 ```
 
+Example of a public profile (contained in `###.pkl` where `###` is the ID of the user. The ID is undisclosed here for privacy reasons):
 ```
 {
  'first_name': 'Susan', 
@@ -45,4 +49,11 @@ Number of Facebook images       : 15107 (+11)
   'id': '###'
 }
 ```
-`###` is the ID of the user (undisclosed here for privacy reasons). The corresponding profile pictures is `###.jpg` in the same folder.
+The corresponding profile picture is located in `###.jpg`.
+
+## Common errors
+
+Sometimes the profile is there but it's not available in the Graph API. Most of the time, the profile is inactive and it's better to move on, rather than raising an exception that would block the script:
+```
+INFO:facebook-deep-learning:Unsupported get request. Object with ID '827435111' does not exist, cannot be loaded due to missing permissions, or does not support this operation. Please read the Graph API documentation at https://developers.facebook.com/docs/graph-api
+```
