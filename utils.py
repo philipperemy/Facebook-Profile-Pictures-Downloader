@@ -1,4 +1,5 @@
 import json
+import os
 import pickle
 from glob import glob
 from urllib.error import URLError
@@ -14,6 +15,9 @@ from log import log
 
 credentials = json.load(open('credentials.json', 'r'))
 fb_auth_token = credentials['FB_AUTH_TOKEN']
+
+if not os.path.exists('data'):
+    os.makedirs('data')
 
 
 def profile_exists(profile_id):
