@@ -13,11 +13,20 @@ from requests.exceptions import ConnectionError
 
 from log import log
 
-credentials = json.load(open('credentials.json', 'r'))
-fb_auth_token = credentials['FB_AUTH_TOKEN']
-
 if not os.path.exists('data'):
     os.makedirs('data')
+
+
+class UserRequestLimitReached(Exception):
+    pass
+
+
+class AccessTokenExpired(Exception):
+    pass
+
+
+class InvalidToken(Exception):
+    pass
 
 
 def profile_exists(profile_id):
@@ -73,7 +82,12 @@ def extract_information(profile_id, access_token):
         except GraphAPIError as e:
             log(str(e))
             if 'validating access token' in str(e):
-                raise e
+                raise AccessTokenExpired()
+            if 'User request limit reached' in str(e):
+                raise UserRequestLimitReached()
+            if 'Invalid OAuth access token' in str(e) or 'An access token is required to request this resource' in str(
+                    e):
+                raise InvalidToken()
             return
         except ConnectionError as r:
             log(str(r))
@@ -99,7 +113,17 @@ def parallel_function(f, sequence, num_threads=None):
     return cleaned
 
 
+def overwrite_current_token(new_token):
+    credentials = json.load(open('credentials.json', 'r'))
+    credentials['FB_AUTH_TOKEN'] = new_token
+    os.remove('credentials.json')
+    json.dump(credentials, open('credentials.json', 'w'))
+
+
 def run(cur_profile_id):
+    credentials = json.load(open('credentials.json', 'r'))
+    fb_auth_token = credentials['FB_AUTH_TOKEN']
+    log('FB_auth_token = {}'.format(fb_auth_token))
     log('Starting from profile id = {}. This thread is going '
         'to increment the profile_id by 1 at every step.'.format(cur_profile_id))
     while True:
