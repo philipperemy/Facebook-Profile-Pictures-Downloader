@@ -3,6 +3,12 @@ Applying Deep Learning to Facebook public information to extract interesting pat
 
 <i>Nothing very precise yet. We're just going to have fun and build a big Facebook dataset in the short term!</i>
 
+<div align="center">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/F_icon.svg/2000px-F_icon.svg.png" width="200"><br><br>
+</div>
+
+
+
 ## How to use it?
 
 Install the latest `facebook-sdk`.
@@ -26,7 +32,30 @@ python3 profile_miner.py 10 # to start mining facebook profiles. Here we use 10 
 
 ## Facebook Token ID
 
+### Manual update
+Get your Facebook Token ID here and load it into your `credentials.json` file.
 https://developers.facebook.com/tools/explorer/
+
+### Automatic update (much more useful)
+
+Before using the automatic updates, make sure that it worked at least one time with the manual procedure (just above). Browse on https://developers.facebook.com/tools/explorer/ and request a Token ID. This part relies on web scraping. If everything is not correctly set up beforehand, it is very likely to fail.
+
+Once it's done, let's start this server that will automatically ask Facebook servers for a new token. The main script `profile_miner.py` auto detects when the token expires. When this happens, a call is made to the server started by `auto_token_generator.py`.
+
+Start the server with this command:
+```
+export FB_EMAIL=john.appleseed@apple.com FB_PASS='i_love_apple';python3 auto_token_generator.py
+```
+Where `FB_EMAIL` is your Facebook email address and `FB_PASS` is your Facebook password. I advise you to create a specific Facebook account just for those tasks.
+
+You can check if the server is responding by running this command:
+
+```
+curl http://localhost:5000/
+```
+
+Or just connecting to http://localhost:5000/ from your favorite browser. Be patient, it can take up to one minute to query Facebook servers. The procedure is explicitly slow to avoid any bot detection.
+
 
 ## Scan data
 
@@ -70,4 +99,9 @@ INFO:facebook-deep-learning:Unsupported get request. Object with ID '827435111' 
 The token is only valid for one hour. If you guys have a better way to extend the expiration date, I'll be happy to hear!
 ```
 facebook.GraphAPIError: Error validating access token: Session has expired on Saturday, 08-Apr-17 23:00:00 PDT. The current time is Saturday, 08-Apr-17 23:01:30 PDT.
+```
+
+The GraphAPI has implemented user request limits. From my experience it's something like 10,000 calls per hour. But it seems to depend upon the application. It's a very gross rule of thumb. When it happens, the script is put on hold for one hour before resuming.
+```
+INFO:facebook-deep-learning:(#17) User request limit reached
 ```
