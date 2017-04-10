@@ -29,6 +29,10 @@ class InvalidToken(Exception):
     pass
 
 
+class CaptchaDetectedOnPage(Exception):
+    pass
+
+
 def profile_exists(profile_id):
     """We don't rely on a GraphAPIError because we want to minimize the number of calls to the GraphAPI.
     Mainly because of the API limits."""
@@ -40,6 +44,11 @@ def profile_exists(profile_id):
         r = requests.get('http://facebook.com/profile.php?id={}'.format(profile_id), headers=headers)
     except:
         return False
+
+    if 'captcha' in r.content.decode('utf8'):
+        log('Captcha detected. Our IP got discovered. Please try again later.')
+        raise CaptchaDetectedOnPage()
+
     return not r.status_code == 404
 
 
